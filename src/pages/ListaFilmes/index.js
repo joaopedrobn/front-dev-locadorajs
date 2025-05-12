@@ -11,8 +11,28 @@ function ListaFilmes() {
   const [genero, setGenero] = useState("");
   const [filmes, setFilmes] = useState([]);
 
-  const alugaFilme = () => {
+  const alugaFilme = (id) => {
     console.log('Aluga Filme');
+
+    const idCliente = JSON.parse(localStorage.getItem("userId"));
+    console.log(idCliente);
+
+    const cliente = { id: idCliente };
+
+    api
+      .post("/locacoes", {
+        cliente,
+        filme: { id },
+        data: "11/05/2025",
+        valor: "R$ 10,00",
+      })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/cliente");
+      })
+      .catch((erro) => {
+        console.log(erro);
+      });
   };
 
   const detalhesFilme = () => {
