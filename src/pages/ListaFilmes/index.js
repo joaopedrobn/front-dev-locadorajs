@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import FilmesTable from "../FilmesTable";
+import Card from '../../components/Card';
 
 function ListaFilmes() {
   const navigate = useNavigate();
@@ -9,9 +10,18 @@ function ListaFilmes() {
   const [nome, setNome] = useState("");
   const [genero, setGenero] = useState("");
   const [filmes, setFilmes] = useState([]);
-  const [state, setState] = useState({
-    filmes: [],
-  });
+
+  const alugaFilme = () => {
+    console.log('Aluga Filme');
+  };
+
+  const detalhesFilme = () => {
+    console.log('Detalhes Filme');
+  };
+
+  const valorAluguel = () => {
+    console.log('Valor do Aluguel');
+  };
 
   useEffect(() => {
     const params = {
@@ -24,8 +34,6 @@ function ListaFilmes() {
       .then((response) => {
         setFilmes(response.data);
         console.log(response.data);
-        const lista = response.data;
-        setState[{ ...state, filmes: lista }];
       })
       .catch((error) => {
         console.log(error);
@@ -33,17 +41,20 @@ function ListaFilmes() {
   }, []);
 
   return (
-    <div>
-      <FilmesTable filmes={state.filmes} />
-      {}
-      <ul>
-        {filmes.map((filme, index) => (
-          <li key={index}>
-            {filme.nome} - {filme.genero}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Card title="Consultar Filmes">
+      <div className='row'>
+        <div className='col-md-12'>
+          <div className='bs-component'>
+            <FilmesTable
+              filmes={filmes}
+              alugaFilme={alugaFilme}
+              detalhesFilme={detalhesFilme}
+              valorAluguel={valorAluguel}
+            />
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 }
 
