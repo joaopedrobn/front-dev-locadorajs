@@ -1,21 +1,23 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from "./pages/Home";
+import Home from './pages/Home';
 import LandingPage from './pages/LandingPage';
-import Login from "./pages/Login";
-import Cliente from "./pages/Cliente"
-import ListaFilmes from "./pages/ListaFilmes"
+import Login from './pages/Login';
+import Cliente from './pages/Cliente';
+import ListaFilmes from './pages/ListaFilmes';
+import ListaFilmesAlugados from './pages/ListaFilmesAlugados';
 
 export default function AppRoutes() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/cliente" element={<Cliente />} />
-                <Route path="/listafilmes" element={<ListaFilmes />} />
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cliente" element={<Cliente />} />
+        <Route path="/listafilmes" element={<ListaFilmes />} />
+        <Route path="/listafilmesAlugados" element={<ListaFilmesAlugados />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
