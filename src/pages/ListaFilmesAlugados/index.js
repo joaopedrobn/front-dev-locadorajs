@@ -4,46 +4,53 @@ import api from '../../services/api';
 import Card from '../../components/Card';
 import FilmesAlugadosTable from '../FilmesAlugadosTable';
 
-function ListaFilmes() {
+function ListaFilmesAlugados() {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState('');
-  const [genero, setGenero] = useState('');
-  const [filmes, setFilmes] = useState([]);
-  const [state, setState] = useState({
-    filmes: [],
-  });
+  const [locacoes, setLocacoes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const params = {
-      nome: nome,
-      genero: genero,
-    };
+    // Para listar por cliente, use esta rota:
+    // const userId = localStorage.getItem('userId');
+    // const url = `/locacoes/cliente/${userId}`;
+    const url = '/locacoes';
 
     api
-      .get('/filmes/disponiveis', { params })
-      .then(response => {
-        setFilmes(response.data[''].filme);
-        console.log(response.data[''].filme);
-        //console.log(response.data[0].filme);
-        const lista = response.data[''].filme;
-        setState[{ ...state, filmes: lista }];
+      .get(url)
+      .then(res => {
+        console.log('Locações recebidas:', res.data);
+        setLocacoes(Array.isArray(res.data) ? res.data : []);
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(err => {
+        console.error('Erro ao buscar locações:', err);
+        setLocacoes([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
-    <Card title="Consultar Filmes">
-      <div className="row">
-        <div className="col-md-12">
-          <div className="bs-component">
-            <FilmesAlugadosTable filmes={state.filmes} />
-          </div>
-        </div>
-      </div>
-    </Card>
+    <>
+      <Card title="Consultar Filmes Alugados">
+        {loading ? (
+          <div className="text-center p-3">Carregando...</div>
+        ) : locacoes.length === 0 ? (
+          <div className="text-center p-3">Nenhuma locação encontrada.</div>
+        ) : (
+          <FilmesAlugadosTable locacoes={locacoes} />
+        )}
+      </Card>
+
+      <button
+        style={{ width: '100%' }}
+        onClick={() => navigate('/cliente')}
+        className="btn btn-danger btn-lg"
+        type="button"
+      >
+        <i className="pi pi-sign-in" />
+        &nbsp; Voltar
+      </button>
+    </>
   );
 }
 

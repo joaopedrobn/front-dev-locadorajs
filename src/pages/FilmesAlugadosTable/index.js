@@ -1,14 +1,29 @@
 import React from 'react';
 
-function FilmesAlugadosTable(props) {
-  const rows = props.filmes.map(filme => {
-    return (
-      <tr key={filme.id}>
-        <td className="text-center">{filme.nome}</td>
-        <td className="text-center">{filme.genero}</td>
-      </tr>
-    );
-  });
+function FilmesAlugadosTable({ locacoes = [], devolveFilme }) {
+  const rows = locacoes.map(loc => (
+    <tr key={loc.id}>
+      <td className="text-center">{loc.filme?.nome ?? '-'}</td>
+      <td className="text-center">{loc.filme?.genero ?? '-'}</td>
+      <td className="text-center">{loc.data ?? '-'} (2 dias para devolução)</td>
+      <td className="text-center">{loc.valor ?? '-'}</td>
+      <td className="text-center">{loc.status ?? '-'}</td>
+
+      {/* Mantém a coluna sempre presente para não desalinha a tabela */}
+      <td className="text-center">
+        {loc.status === 'Alugado' && (
+          <button
+            className="btn btn-success"
+            title="Devolver"
+            onClick={() => devolveFilme?.(loc.id)}
+            type="button"
+          >
+            <i className="pi pi-check" />
+          </button>
+        )}
+      </td>
+    </tr>
+  ));
 
   return (
     <table className="table table-hover table-bordered shadow-sm rounded">
@@ -20,6 +35,18 @@ function FilmesAlugadosTable(props) {
           <th scope="col" className="text-center">
             Gênero
           </th>
+          <th scope="col" className="text-center">
+            Data
+          </th>
+          <th scope="col" className="text-center">
+            Valor
+          </th>
+          <th scope="col" className="text-center">
+            Status
+          </th>
+          <th scope="col" className="text-center">
+            Devolver Filme
+          </th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
@@ -27,4 +54,4 @@ function FilmesAlugadosTable(props) {
   );
 }
 
-export default FilmesTable;
+export default FilmesAlugadosTable;
